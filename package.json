@@ -1,0 +1,28 @@
+{
+  "name": "dynamessage-backend",
+  "version": "1.0.0",
+  "description": "Dynamessage's RESTful API with Node JS",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rizueu/dynamessage-backend.git"
+  },
+  "keywords": [
+    "Backend",
+    "Node",
+    "JS",
+    "Javascript",
+    "Express",
+    "JS",
+    "MySQL"
+  ],
+  "author": "rizueu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rizueu/dynamessage-backend/issues"
+  },
+  "homepage": "https://github.com/rizueu/dynamessage-backend#readme"
+}
