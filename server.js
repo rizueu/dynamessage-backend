@@ -49,9 +49,13 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, './public')));
 
 // Define Routes
+app.get('/', (req, res) => {
+  res.status(200).send('Welcome to Dynamessage REST API!');
+});
 app.use('/auth', require('./src/routes/authRoute'));
+app.use('/chat', require('./src/routes/chatRoute'));
 
 // Listening to the server
-const { APP_URL } = process.env;
-const PORT = process.env.APP_PORT || 8080;
+const { APP_URL, APP_PORT } = process.env;
+const PORT = APP_PORT || 8080;
 server.listen(PORT, () => console.log(`Magic happen at ${APP_URL}:${PORT}/`));

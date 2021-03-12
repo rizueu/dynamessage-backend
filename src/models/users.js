@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: 'nophoto.png',
       },
+      verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       sequelize,

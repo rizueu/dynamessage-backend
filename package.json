@@ -36,7 +36,10 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "morgan": "^1.10.0",
+    "mustache": "^4.1.0",
     "mysql2": "^2.2.5",
+    "nodemailer": "^6.5.0",
+    "nodemailer-smtp-transport": "^2.7.4",
     "sequelize": "^6.5.0",
     "socket.io": "^4.0.0"
   },
