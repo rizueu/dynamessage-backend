@@ -1,9 +1,5 @@
 # Dynamessage Backend
 
-## Overview
-
-Dynamessage's RESTful API with NodeJS
-
 ## Installation & Local Run
 
 1. `npm install`
