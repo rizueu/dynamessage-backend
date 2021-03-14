@@ -16,11 +16,16 @@ exports.register = async (req, res) => {
 
   try {
     // Checking if user is already in the database
-    const emailExist = await users.findOne({
+    const userExist = await users.findOne({
       where: { email },
     });
-    if (emailExist) {
+    if (userExist) {
       return response(res, 400, false, 'Email already exists');
+    }
+
+    const usernameUsed = await users.findOne({ where: { username } });
+    if (usernameUsed) {
+      return response(res, 400, false, 'Username already exists');
     }
 
     // Hash the password
@@ -71,6 +76,11 @@ exports.login = async (req, res) => {
     });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return response(res, 400, false, 'The credentials entered are wrong.');
+    }
+
+    // Check user's verification
+    if (!user.verified) {
+      return response(res, 400, false, "Your account haven't active");
     }
 
     // Create and assign a token
@@ -127,8 +137,8 @@ exports.getUser = async (req, res) => {
       );
     } else {
       const data = {
-        ...user,
-        picture: process.env.URL.concat('/images/profile/', user.picture),
+        ...user.dataValues,
+        picture: process.env.URL.concat('/profile/', user.picture),
       };
       return response(
         res,
