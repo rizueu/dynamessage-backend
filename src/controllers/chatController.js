@@ -27,7 +27,7 @@ exports.receive = async (req, res) => {
   } else {
     try {
       const results = await messages.findAll({
-        attributes: ['senderId', 'message', 'createdAt'],
+        attributes: ['senderId', 'message', sequelize.fn('MAX', sequelize.col('createdAt'))],
         order: [['createdAt', 'ASC']],
         where: {
           userId: req.userData.id,
