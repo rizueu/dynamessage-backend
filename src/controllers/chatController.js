@@ -14,7 +14,7 @@ exports.receive = async (req, res) => {
       // Get Chat History by senderId
       const results = await messages.findAll({
         where: {
-          [Op.and]: [{ receiverId: req.userData.id }, { senderId: senderId }],
+          [Op.and]: [{ userId: req.userData.id }, { senderId: senderId }],
         },
       });
 
@@ -27,7 +27,11 @@ exports.receive = async (req, res) => {
   } else {
     try {
       const results = await messages.findAll({
-        attributes: ['senderId', 'message', sequelize.fn('MAX', sequelize.col('createdAt'))],
+        attributes: [
+          'senderId',
+          'message',
+          sequelize.fn('MAX', sequelize.col('createdAt')),
+        ],
         order: [['createdAt', 'ASC']],
         where: {
           userId: req.userData.id,
@@ -62,7 +66,7 @@ exports.send = async (req, res) => {
 
     // Send message
     const chat = {
-      receiverId: Number(recipient),
+      userId: Number(recipient),
       senderId: id,
       message: req.body.message,
     };
