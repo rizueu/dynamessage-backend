@@ -45,7 +45,7 @@ exports.receive = async (req, res) => {
         attributes: [
           'senderId',
           'message',
-          sequelize.fn('MAX', sequelize.col('createdAt')),
+          sequelize.fn('MAX', sequelize.col('messages.createdAt')),
         ],
         order: [['createdAt', 'ASC']],
         where: {
