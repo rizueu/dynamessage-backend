@@ -1,5 +1,6 @@
 // Import modules
 const { Op } = require('sequelize');
+const moment = require('moment');
 
 // Import Model
 const { messages, users } = require('../models');
@@ -12,11 +13,24 @@ exports.receive = async (req, res) => {
   if (senderId) {
     try {
       // Get Chat History by senderId
-      const results = await messages.findAll({
+      const sender = await messages.findAll({
         where: {
           [Op.and]: [{ userId: req.userData.id }, { senderId: senderId }],
         },
       });
+
+      const recipient = await messages.findAll({
+        where: {
+          [Op.and]: [{ userId: senderId }, { senderId: req.userData.id }],
+        },
+      });
+
+      const results = [...sender, ...recipient];
+
+      results.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
 
       // Return a response to the client
       return response(res, 200, true, 'Chat History', results);
