@@ -55,32 +55,44 @@ exports.receive = async (req, res) => {
           },
         ],
         group: ['senderId'],
+        raw: true,
       });
 
-      const latestMessage = await messages.findAll({
+      const latest = await messages.findAll({
         order: [['createdAt', 'DESC']],
+        raw: true,
       });
 
-      // const modifiedResults = results.dataValues.map((item) => ({
-      //   ...item,
-      //   message:
-      //     latestMessage === 1
-      //       ? latesMessage.message
-      //       : latestMessage
-      //           .filter((itemFilter) => item.senderId === itemFilter.senderId)
-      //           .map((item) => item.message)
-      //           .shift(),
-      //   createdAt:
-      //     latestMessage === 1
-      //       ? latesMessage.createdAt
-      //       : latestMessage
-      //           .filter((itemFilter) => item.senderId === itemFilter.senderId)
-      //           .map((item) => item.createdAt)
-      //           .shift(),
-      // }));
+      const modifiedResults = results.map((item) => ({
+        ...item,
+        message:
+          latest.length === 1
+            ? latest.message
+            : latest
+                .filter((items) => {
+                  return (
+                    item.senderId === items.userId ||
+                    item.senderId === items.senderId
+                  );
+                })
+                .map((item) => item.message)
+                .shift(),
+        createdAt:
+          latest.length === 1
+            ? latest[0].createdAt
+            : latest
+                .filter((items) => {
+                  return (
+                    item.senderId === items.userId ||
+                    item.senderId === items.senderId
+                  );
+                })
+                .map((item) => moment(item.createdAt).format('D MMM'))
+                .shift(),
+      }));
 
       // Return a response to the client
-      return response(res, 200, true, 'Chat Lists', results);
+      return response(res, 200, true, 'Chat Lists', modifiedResults);
     } catch (error) {
       response(res, 500, false, error.message);
       throw new Error(error);
