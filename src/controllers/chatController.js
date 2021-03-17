@@ -30,7 +30,7 @@ exports.receive = async (req, res) => {
 
       results.sort(
         (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
 
       // Return a response to the client
@@ -42,11 +42,7 @@ exports.receive = async (req, res) => {
   } else {
     try {
       const results = await messages.findAll({
-        attributes: [
-          'senderId',
-          'message',
-          sequelize.fn('MAX', sequelize.col('messages.createdAt')),
-        ],
+        attributes: ['userId', 'senderId'],
         order: [['createdAt', 'ASC']],
         where: {
           userId: req.userData.id,
@@ -60,6 +56,28 @@ exports.receive = async (req, res) => {
         ],
         group: ['senderId'],
       });
+
+      const latestMessage = await messages.findAll({
+        order: [['createdAt', 'DESC']],
+      });
+
+      // const modifiedResults = results.dataValues.map((item) => ({
+      //   ...item,
+      //   message:
+      //     latestMessage === 1
+      //       ? latesMessage.message
+      //       : latestMessage
+      //           .filter((itemFilter) => item.senderId === itemFilter.senderId)
+      //           .map((item) => item.message)
+      //           .shift(),
+      //   createdAt:
+      //     latestMessage === 1
+      //       ? latesMessage.createdAt
+      //       : latestMessage
+      //           .filter((itemFilter) => item.senderId === itemFilter.senderId)
+      //           .map((item) => item.createdAt)
+      //           .shift(),
+      // }));
 
       // Return a response to the client
       return response(res, 200, true, 'Chat Lists', results);
