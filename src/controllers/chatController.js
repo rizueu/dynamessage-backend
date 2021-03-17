@@ -1,5 +1,6 @@
 // Import modules
-const { Op } = require('sequelize');
+const sequelize,
+  { Op } = require('sequelize');
 const moment = require('moment');
 
 // Import Model
