@@ -205,7 +205,7 @@ exports.edit = async (req, res) => {
     case 'password': {
       const { prevPassword, password } = req.body;
       try {
-        const user = users.findOne({
+        const user = await users.findOne({
           where: {
             id: req.userData.id,
           },
