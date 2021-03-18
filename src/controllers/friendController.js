@@ -99,6 +99,23 @@ exports.deleteFriend = async (req, res) => {
   }
 };
 
+exports.getFriendById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const results = await users.findOne({
+      attributes: ['id', 'name', 'username', 'picture'],
+      where: {
+        id,
+      },
+      raw: true,
+    });
+    return response(res, 200, true, `Friends with id: ${id}`, results);
+  } catch (error) {
+    response(res, 500, false, error.message);
+    throw new Error(error);
+  }
+};
+
 exports.getUserFriends = async (req, res) => {
   const {
     limit = 5,
@@ -119,7 +136,7 @@ exports.getUserFriends = async (req, res) => {
 
   try {
     const results = await friendship.findAll({
-      attribute: ['friendId', 'createdAt'],
+      attributes: ['friendId', 'createdAt'],
       limit: Number(limit),
       offset: offset,
       order: [[order, sort]],
@@ -141,7 +158,7 @@ exports.getUserFriends = async (req, res) => {
       ],
     });
     const nextResults = await friendship.findAll({
-      attribute: ['friendId', 'createdAt'],
+      attributes: ['friendId', 'createdAt'],
       limit: Number(limit),
       offset: offset + dataLimit,
       order: [[order, sort]],
