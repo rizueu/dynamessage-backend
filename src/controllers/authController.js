@@ -203,10 +203,21 @@ exports.edit = async (req, res) => {
       }
     }
     case 'password': {
+      const { prevPassword, password } = req.body;
       try {
+        const user = users.findOne({
+          where: {
+            id: req.userData.id,
+          },
+        });
+
+        if (!(await bcrypt.compare(prevPassword, user.password))) {
+          return response(400, false, 'Wrong previous password!');
+        }
+
         // Hash the password
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         // Update password
         const results = await users.update(
