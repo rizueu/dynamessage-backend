@@ -212,7 +212,7 @@ exports.edit = async (req, res) => {
         });
 
         if (!(await bcrypt.compare(prevPassword, user.password))) {
-          return response(400, false, 'Wrong previous password!');
+          return response(res, 400, false, 'Wrong previous password!');
         }
 
         // Hash the password
