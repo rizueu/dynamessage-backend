@@ -42,7 +42,7 @@ exports.receive = async (req, res) => {
   } else {
     try {
       const results = await messages.findAll({
-        attributes: ['userId', 'senderId'],
+        attributes: ['id', 'userId', 'senderId'],
         order: [['createdAt', 'ASC']],
         where: {
           userId: req.userData.id,
