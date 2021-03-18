@@ -136,7 +136,7 @@ exports.getUserFriends = async (req, res) => {
 
   try {
     const results = await friendship.findAll({
-      attributes: ['friendId', 'createdAt'],
+      attributes: ['id', 'friendId', 'createdAt'],
       limit: Number(limit),
       offset: offset,
       order: [[order, sort]],
