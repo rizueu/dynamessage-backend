@@ -55,6 +55,7 @@ app.get('/', (req, res) => {
 app.use('/auth', require('./src/routes/authRoute'));
 app.use('/chat', require('./src/routes/chatRoute'));
 app.use('/friends', require('./src/routes/friendRoute'));
+app.use('/contact', require('./src/routes/contactRoute'));
 
 // Listening to the server
 const { APP_URL, APP_PORT } = process.env;
