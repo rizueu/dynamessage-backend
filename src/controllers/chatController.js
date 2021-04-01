@@ -116,8 +116,8 @@ exports.send = async (req, res) => {
       message: req.body.message,
     };
     const message = new messages(chat);
+    req.socket.emit(recipient, chat);
     await message.save();
-    req.socket.emit(req.userData.id, chat);
 
     // Return a response to the client
     return response(res, 200, true, 'Chat Sended!');
